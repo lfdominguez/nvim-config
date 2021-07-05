@@ -4,10 +4,14 @@ local function _1_(use)
         "wbthomason/packer.nvim"
     })
     
+    --use({
+    --     "marko-cerovac/material.nvim", 
+    --     config = "require('h3r3t1c.plugins/material')"
+    --    })
     use({
-         "marko-cerovac/material.nvim", 
-         config = "require('h3r3t1c.plugins/material')"
-        })
+         "eddyekofo94/gruvbox-flat.nvim",
+         config = "vim.cmd[[colorscheme gruvbox-flat]]"
+    })
     
     use({
          "nvim-telescope/telescope.nvim",
@@ -25,11 +29,6 @@ local function _1_(use)
          requires = {"ray-x/lsp_signature.nvim"},
          config = "require('h3r3t1c.plugins/nvim-lspconfig')"
         })
-    
---    use({
---         "simrat39/rust-tools.nvim",
---         config = "require('h3r3t1c.plugins/rust-tools')"
---        })
     
     use({
          "hoob3rt/lualine.nvim",
@@ -89,6 +88,12 @@ local function _1_(use)
     
     use({
          "tpope/vim-commentary"
+    })
+    
+    use({
+         "simrat39/rust-tools.nvim",
+         after = 'nvim-treesitter',
+         config = "require('h3r3t1c.plugins/rust-tools')"
     })
 end
 

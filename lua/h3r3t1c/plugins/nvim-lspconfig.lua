@@ -82,31 +82,31 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-lspconfig.rust_analyzer.setup{
-    on_attach = on_attach,
-    on_init = custom_on_init,
-    capabilities = capabilities,
-    settings = {
-      ["rust-analyzer"] = {
-                           assist = {
-                                     importEnforceGranularity = true
-                                     },
-                           checkOnSave = {
-                                          command = "clippy"
-                                          },
-                           experimental = {
-                                           procAttrMacros = true
-                                           },
-                           hoverActions = {
-                                           references = true
-                                           },
-                           lens = {
-                                   methodReferences = true,
-                                   references = true
-                                   }
-                           }
-    }
-}
+--lspconfig.rust_analyzer.setup{
+--    on_attach = on_attach,
+--    on_init = custom_on_init,
+--    capabilities = capabilities,
+--    settings = {
+--      ["rust-analyzer"] = {
+--                           assist = {
+--                                     importEnforceGranularity = true
+--                                     },
+--                           checkOnSave = {
+--                                          command = "clippy"
+--                                          },
+--                           experimental = {
+--                                           procAttrMacros = true
+--                                           },
+--                           hoverActions = {
+--                                           references = true
+--                                           },
+--                           lens = {
+--                                   methodReferences = true,
+--                                   references = true
+--                                   }
+--                           }
+--    }
+--}
 
 lspconfig.jdtls.setup {
     on_attach = on_attach,
