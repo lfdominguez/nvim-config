@@ -4,13 +4,9 @@ local function _1_(use)
         "wbthomason/packer.nvim"
     })
     
-    --use({
-    --     "marko-cerovac/material.nvim", 
-    --     config = "require('h3r3t1c.plugins/material')"
-    --    })
     use({
          "eddyekofo94/gruvbox-flat.nvim",
-         config = "vim.cmd[[colorscheme gruvbox-flat]]"
+         config = "vim.g.gruvbox_flat_style = 'dark'; vim.cmd[[colorscheme gruvbox-flat]]"
     })
     
     use({
@@ -32,9 +28,9 @@ local function _1_(use)
     
     use({
          "hoob3rt/lualine.nvim",
-         requires = {"kyazdani42/nvim-web-devicons"},
+         requires = {"kyazdani42/nvim-web-devicons", "arkav/lualine-lsp-progress"},
          config = "require('h3r3t1c.plugins/lualine')"
-        })
+    })
     
     use({
          "kyazdani42/nvim-tree.lua",
@@ -87,14 +83,73 @@ local function _1_(use)
     })
     
     use({
-         "tpope/vim-commentary"
+         "b3nj5m1n/kommentary",
+         keys = "gc",
+         config = "require('h3r3t1c.plugins/kommentary')"
     })
     
     use({
          "simrat39/rust-tools.nvim",
-         after = 'nvim-treesitter',
+         ft = { "rust" },
+         after = {'nvim-treesitter', "lsp-status.nvim"},
          config = "require('h3r3t1c.plugins/rust-tools')"
     })
+    
+    use({
+         "mfussenegger/nvim-jdtls",
+         after = {'nvim-treesitter', "lsp-status.nvim"},
+         ft = {"java"},
+         config = "require('h3r3t1c.plugins/nvim-jdtls')"
+    })
+    
+    use({
+         "nvim-lua/lsp-status.nvim"
+    })
+    
+    use({
+         "lewis6991/gitsigns.nvim",
+         requires = {"nvim-lua/plenary.nvim"},
+         event = "BufRead",
+         config = "require('h3r3t1c.plugins/gitsigns')"
+    })
+    
+    use({"ryvnf/readline.vim"})
+    use({"tpope/vim-eunuch"})
+    
+    use({
+         "junegunn/vim-easy-align",
+         keys = {"ga"},
+         config = "require('h3r3t1c.plugins/vim-easy-align')"
+    })
+    
+    use({
+        "machakann/vim-sandwich",
+        config = "require('h3r3t1c.plugins/vim-sandwich')"
+    })
+    
+    use({
+        "AndrewRadev/splitjoin.vim",
+         keys = { "gS", "gJ" },
+         config = "require('h3r3t1c.plugins/splitjoin')"
+    })
+    
+    use({
+        "tpope/vim-dispatch",
+         cmd = { "Dispatch", "Make", "Focus", "Start" }
+    })
+    
+    use({
+         "L3MON4D3/LuaSnip",
+         requires = {"rafamadriz/friendly-snippets"},
+         config = "require('h3r3t1c.plugins/LuaSnip')"
+    })
+    
+    use({
+        "junegunn/fzf.vim",
+        config = "require('h3r3t1c.plugins/fzf')"
+    })
+    
+    
 end
 
 packer.startup(_1_)

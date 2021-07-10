@@ -1,4 +1,5 @@
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {
@@ -64,6 +65,8 @@ local opts = {
         -- this overrides the default hover handler
         -- default: true
         hover_with_actions = true,
+             
+        hover_action_automatic_focus = true,
 
         runnables = {
             -- whether to use telescope for selection menu or not
@@ -125,7 +128,14 @@ local opts = {
         settings = {
             ["rust-analyzer"] = {
                 assist = {
+                    importGranularity = "module",
                     importEnforceGranularity = true
+                },
+                cargo = {
+                    loadOutDirsFromCheck = true
+                },
+                procMacro = {
+                    enable = true
                 },
                 checkOnSave = {
                     command = "clippy"
