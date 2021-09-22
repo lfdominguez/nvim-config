@@ -3,6 +3,14 @@ local function _1_(use)
     use({
         "wbthomason/packer.nvim"
     })
+
+    use({
+      "lewis6991/impatient.nvim"
+    })
+
+    use({
+      "chr4/nginx.vim"
+    })
     
     use({
          "eddyekofo94/gruvbox-flat.nvim",

@@ -19,10 +19,12 @@ end
 
 -- Bootstrap essential plugins required for installing and loading the rest.
 ensure("wbthomason", "packer.nvim")
+ensure("lewis6991", "impatient.nvim")
 
 -- my/init get's called after some plugins (nvim stuff) so I have to be sure it's set before
 vim.g["mapleader"] = " "
 vim.g["maplocalleader"] = " "
 vim.opt.termguicolors = true
 
+require('impatient')
 require('h3r3t1c.init')
