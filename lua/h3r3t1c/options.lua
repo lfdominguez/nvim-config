@@ -17,6 +17,9 @@ opt.updatetime = 250
 opt.timeoutlen = 400
 opt.clipboard = "unnamedplus"
 
+-- scroll off
+opt.scrolloff = 10
+
 -- disable nvim intro
 opt.shortmess:append "sI"
 

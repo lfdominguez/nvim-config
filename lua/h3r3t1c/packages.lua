@@ -11,6 +11,14 @@ local function _1_(use)
     use({
       "chr4/nginx.vim"
     })
+
+    use({
+      "ixru/nvim-markdown"
+    })
+
+    use({
+      "nathom/filetype.nvim",
+    })
     
     use({
          "eddyekofo94/gruvbox-flat.nvim",
@@ -19,7 +27,7 @@ local function _1_(use)
     
     use({
          "nvim-telescope/telescope.nvim",
-         requires = {"nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzy-native.nvim"},
+         requires = {"nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzy-native.nvim", "https://gitlab.com/thlamb/telescope-zettel.nvim"},
          config = "require('h3r3t1c.plugins/telescope')"
         })
     
@@ -113,11 +121,24 @@ local function _1_(use)
     use({
          "nvim-lua/lsp-status.nvim"
     })
+
+    use({
+      'tpope/vim-fugitive'
+    })
+    
+    use({
+      'tpope/vim-repeat'
+    })
+
+    use({
+      "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = "require('h3r3t1c.plugins/trouble')"
+    })
     
     use({
          "lewis6991/gitsigns.nvim",
          requires = {"nvim-lua/plenary.nvim"},
-         event = "BufRead",
          config = "require('h3r3t1c.plugins/gitsigns')"
     })
     

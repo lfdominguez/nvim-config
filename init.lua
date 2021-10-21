@@ -1,6 +1,4 @@
 -- Entrypoint for my Neovim configuration!
--- We simply bootstrap packer and Aniseed here.
--- It's then up to Aniseed to compile and load fnl/init.fnl
 
 local execute = vim.api.nvim_command
 local fn = vim.fn
@@ -25,6 +23,7 @@ ensure("lewis6991", "impatient.nvim")
 vim.g["mapleader"] = " "
 vim.g["maplocalleader"] = " "
 vim.opt.termguicolors = true
+vim.g.did_load_filetypes = 1
 
 require('impatient')
 require('h3r3t1c.init')

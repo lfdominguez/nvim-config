@@ -1,4 +1,5 @@
 cmd = vim.cmd
+
 -- Extend %% as current file's folder
 cmd "cabbr <expr> %% expand('%:p:h')"
 -- Easier shortcut for exiting the terminal
@@ -19,3 +20,8 @@ cmd "vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z"
 cmd "nnoremap Y y$"
 --  qq to record, Q to replay
 cmd "nnoremap Q @q"
+
+-- Telescope zk
+cmd "nmap <leader>zf :lua require('telescope').extensions.zettel.find_zettel()<CR>"
+cmd "nmap <leader>zg :lua require('telescope').extensions.zettel.grep_zettels()<CR>"
+

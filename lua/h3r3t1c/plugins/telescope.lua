@@ -3,10 +3,18 @@ local tele = require("telescope")
 local telepv = require("telescope.previewers")
 
 tele.setup({
-            grep_previewer = telepv.vim_buffer_vimgrep.new
+            grep_previewer = telepv.vim_buffer_vimgrep.new,
+            extensions = {
+              zettel = {
+                zk_path = "~/Notes",
+                link_style = "wiki",
+                remove_ext = true
+              }
+            }
            })
 
 tele.load_extension("fzy_native")
+tele.load_extension("zettel")
 
 vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", {})
 vim.api.nvim_set_keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", {})
