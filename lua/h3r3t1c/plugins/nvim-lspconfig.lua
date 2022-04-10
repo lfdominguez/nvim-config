@@ -56,5 +56,14 @@ lspconfig.zk.setup({ on_attach = function(client, bufnr)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 end })
 
-lspconfig.yamlls.setup{}
+-- lspconfig.yamlls.setup{}
 
+require "lsp_signature".setup({
+    bind = true, -- This is mandatory, otherwise border config won't get registered.
+    floating_window_above_cur_line = true,
+    zindex = 50,
+    toggle_key = '<M-x>',
+    handler_opts = {
+      border = "rounded"
+    }
+  })

@@ -25,3 +25,6 @@ cmd "nnoremap Q @q"
 cmd "nmap <leader>zf :lua require('telescope').extensions.zettel.find_zettel()<CR>"
 cmd "nmap <leader>zg :lua require('telescope').extensions.zettel.grep_zettels()<CR>"
 
+-- Python execute
+cmd "nmap <leader>p :w<CR>:!python %<CR>"
+

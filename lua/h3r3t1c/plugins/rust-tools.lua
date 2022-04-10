@@ -137,9 +137,9 @@ local opts = {
                 procMacro = {
                     enable = true
                 },
-                checkOnSave = {
-                    command = "clippy"
-                },
+--                checkOnSave = {
+--                    command = "clippy"
+--                },
                 experimental = {
                     procAttrMacros = true
                 },
