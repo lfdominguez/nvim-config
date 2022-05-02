@@ -1,4 +1,3 @@
-
 local tele = require("telescope")
 local telepv = require("telescope.previewers")
 
@@ -14,7 +13,6 @@ tele.setup({
            })
 
 tele.load_extension("fzy_native")
-tele.load_extension("zettel")
 tele.load_extension("projects")
 
 vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", {})

@@ -1,6 +1,10 @@
 local opt = vim.opt
 local g = vim.g
 
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+vim.g.copilot_tab_fallback = ""
+
 opt.completeopt = { "menuone", "noselect" }
 opt.undofile = true
 opt.ruler = false

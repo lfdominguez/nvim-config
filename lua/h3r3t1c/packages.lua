@@ -1,7 +1,27 @@
+
 local packer = require("packer")
-local function _1_(use)
+
+packer.init({
+  git = {
+    clone_timeout = 300,
+    subcommands = {
+      install = "clone --depth 1 --progress",
+    },
+  },
+  display = {
+    open_fn = function()
+      return require("packer.util").float({ border = "single" })
+    end
+  },
+  profile = {
+    enable = true,
+  },
+})
+
+local function packer_startup(use)
   use({
-    "wbthomason/packer.nvim"
+    "wbthomason/packer.nvim",
+    opt = true,
   })
 
   use({
@@ -27,13 +47,21 @@ local function _1_(use)
     
   use({
     "nvim-telescope/telescope.nvim",
-    requires = {"nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzy-native.nvim", "https://gitlab.com/thlamb/telescope-zettel.nvim"},
+    requires = {"nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzy-native.nvim"},
     config = "require('h3r3t1c.plugins/telescope')"
   })
     
   use({
-    "hrsh7th/nvim-compe",
-    config = "require('h3r3t1c.plugins/nvim-compe')"
+    "hrsh7th/nvim-cmp",
+    requires = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "saadparwaiz1/cmp_luasnip",
+      "hrsh7th/cmp-copilot"
+    },
+    config = "require('h3r3t1c.plugins/nvim-cmp')"
   })
   
   use({
@@ -41,7 +69,6 @@ local function _1_(use)
     requires = {"ray-x/lsp_signature.nvim"},
     config = "require('h3r3t1c.plugins/nvim-lspconfig')"
   })
-    
   use({
     "hoob3rt/lualine.nvim",
     requires = {"kyazdani42/nvim-web-devicons", "arkav/lualine-lsp-progress"},
@@ -51,7 +78,38 @@ local function _1_(use)
   use({
     "kyazdani42/nvim-tree.lua",
     requires = {"kyazdani42/nvim-web-devicons"},
-    config = "require('h3r3t1c.plugins/nvim-tree')", 
+    config = "require('h3r3t1c.plugins/nvim-tree')",
+    cmd = {
+      "NvimTreeClipboard",
+      "NvimTreeClose",
+      "NvimTreeFindFile",
+      "NvimTreeOpen",
+      "NvimTreeRefresh",
+      "NvimTreeToggle",
+    }
+  })
+
+  use({
+    "akinsho/bufferline.nvim",
+    config = "require('h3r3t1c.plugins/bufferline')",
+    event = "BufWinEnter",
+  })
+
+  use({
+    "RRethy/vim-illuminate",
+    setup = function()
+      vim.g.Illuminate_ftblacklist = {
+        "help",
+        "dashboard",
+        "packer",
+        "norg",
+        "DoomInfo",
+        "NvimTree",
+        "Outline",
+        "toggleterm",
+      }
+    end,
+    event = "BufRead",
   })
     
   use({
@@ -59,28 +117,25 @@ local function _1_(use)
     cmd = "StartupTime"
   })
     
-  -- use({
-    -- "glepnir/lspsaga.nvim",
-    -- config = "require('h3r3t1c.plugins/lspsaga')"
-  -- })
-    
   use({
     "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
     config = "require('h3r3t1c.plugins/nvim-treesitter')"
-  })    
-    
-  use{
-    "romgrk/nvim-treesitter-context",
-    config = "require'treesitter-context.config'.setup{enable = true}"
-  }
-    
-  use{
-    "JoosepAlviste/nvim-ts-context-commentstring"
-  }
-    
+  })
+
   use({
-    "onsails/lspkind-nvim",
-    config = "require('h3r3t1c.plugins/lspkind')"
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    after = "nvim-treesitter",
+  })
+
+  use({
+    "nvim-treesitter/nvim-tree-docs",
+    after = "nvim-treesitter",
+  })
+
+  use({
+    "windwp/nvim-ts-autotag",
+    after = "nvim-treesitter",
   })
     
   use({
@@ -93,9 +148,7 @@ local function _1_(use)
     config = "require'colorizer'.setup()"
   })
     
-  use({
-    "lukas-reineke/indent-blankline.nvim"
-  })
+  use({"lukas-reineke/indent-blankline.nvim"})
     
   use({
     "b3nj5m1n/kommentary",
@@ -117,29 +170,16 @@ local function _1_(use)
     config = "require('h3r3t1c.plugins/nvim-jdtls')"
   })
     
-  use({
-    "nvim-lua/lsp-status.nvim"
-  })
+  use({"nvim-lua/lsp-status.nvim"})
 
-  use({
-    'tpope/vim-fugitive'
-  })
-    
-  use({
-    'tpope/vim-repeat'
-  })
+  use({'tpope/vim-fugitive'})
+  use({'tpope/vim-repeat'})
 
   use({
     "folke/trouble.nvim",
     requires = "kyazdani42/nvim-web-devicons",
     config = "require('h3r3t1c.plugins/trouble')"
   })
-    
---  use({
---    "lewis6991/gitsigns.nvim",
---    requires = {"nvim-lua/plenary.nvim"},
---    config = "require('h3r3t1c.plugins/gitsigns')"
---  })
     
   use({"ryvnf/readline.vim"})
   use({"tpope/vim-eunuch"})
@@ -178,7 +218,12 @@ local function _1_(use)
   })
  
   use({
-    "github/copilot.vim"
+    "github/copilot.vim",
+    config = function ()
+      vim.g.copilot_no_tab_map = true
+      vim.g.copilot_assume_mapped = true
+      vim.g.copilot_tab_fallback = ""
+    end
   })
 
   use({
@@ -192,19 +237,16 @@ local function _1_(use)
     config = "require('spellsitter').setup()"
   })
 
-  use {
+  use({
     "ahmedkhalf/project.nvim",
     config = "require('h3r3t1c.plugins/project')"
-  }
+  })
 
-  -- use {
-  --   "ggandor/lightspeed.nvim"
-  -- }
-  use {
+  use({
     "phaazon/hop.nvim",
     config = "require('h3r3t1c.plugins/nvim-hop')"
-  }
-    
+  })
+     
 end
 
-packer.startup(_1_)
+packer.startup(packer_startup)
