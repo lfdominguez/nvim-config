@@ -32,9 +32,8 @@ lsp_signature_cfg = {
 
 local on_attach = function(client, bufnr)
     require'jdtls.setup'.add_commands()
-    require'jdtls'.setup_dap()
-
-    require'lsp_signature'.on_attach(lsp_signature_cfg)
+    require'lsp-status'.register_progress()
+    -- require'jdtls'.setup_dap()
 
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -64,10 +63,6 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
-    -- Kommentary
-    vim.api.nvim_set_keymap("n", "<leader>/", "<plug>kommentary_line_default", {})
-    vim.api.nvim_set_keymap("v", "<leader>/", "<plug>kommentary_visual_default", {})
-
     -- Mappings.
     local opts = { noremap=true, silent=true }
     -- Java specific
@@ -79,15 +74,18 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("v", "<leader>dm", "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", opts)
 
     vim.api.nvim_exec([[
+        hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+        hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+        hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
         augroup lsp_document_highlight
-        autocmd!
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+          autocmd!
+          autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+          autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
         augroup END
     ]], false)
 end
 
-local root_markers = {'gradlew', 'pom.xml'}
+local root_markers = {'gradlew', 'pom.xml', 'mvnw', '.git'}
 local root_dir = require('jdtls.setup').find_root(root_markers)
 local home = os.getenv('HOME')
 
@@ -97,9 +95,13 @@ local custom_on_init = function(client)
   if client.config.flags then
     client.config.flags.allow_incremental_sync = true
   end
+
+--  client.notify('workspace/didChangeConfiguration', { settings = config.settings })
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+capabilities.workspace.configuration = true
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {
@@ -142,36 +144,63 @@ require('jdtls.ui').pick_one_async = function(items, prompt, label_fn, cb)
     }):find()
 end
 
+local workspace_folder = home .. "/.workspace" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+local config = {
+  flags = {
+    allow_incremental_sync = true,
+  };
+  capabilities = capabilities,
+  on_attach = on_attach,
+}
+
+local extendedClientCapabilities = require'jdtls'.extendedClientCapabilities
+extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
+
 require('jdtls').start_or_attach({
     on_attach = on_attach,
     on_init = custom_on_init,
-    cmd = { "/home/luis/Progs/jdt-language-server/start_server.sh" },
-    cmd_env = {
-      GRADLE_HOME = "/home/luis/.gradle",
-      JAR = vim.NIL
-    },
+    cmd = { "/home/luis/Progs/jdt-language-server/start_server.sh", workspace_folder },
     filetypes = { "java" },
     init_options = {
-      jvm_args = {},
-      workspace = "/home/luis/.gradle"
+      extendedClientCapabilities = extendedClientCapabilities;
     },
+    root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
     settings = {
-        ["java"] = {
+        java = {
             signatureHelp = { enabled = true },
             contentProvider = { preferred = 'fernflower' },
+            completion = {
+              favoriteStaticMembers = {
+                "org.hamcrest.MatcherAssert.assertThat",
+                "org.hamcrest.Matchers.*",
+                "org.hamcrest.CoreMatchers.*",
+                "org.junit.jupiter.api.Assertions.*",
+                "java.util.Objects.requireNonNull",
+                "java.util.Objects.requireNonNullElse",
+                "org.mockito.Mockito.*"
+              }
+            };
             codeGeneration = { generateComments = true },
             implementationsCodeLens = { enabled = true },
             sources = {
                 organizeImports = {
                     starThreshold = 9999;
                     staticStarThreshold = 9999;
-                }
-            },
+                };
+            };
             codeGeneration = {
                 toString = {
                     template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}"
                 }
-            }
+            };
+            configuration = {
+              runtimes = {
+                {
+                  name = "JavaSE-1.8",
+                  path = home .. "/.jabba/jdk/openjdk-ri@1.8",
+                },
+              }
+            };
         }
     }
 })
