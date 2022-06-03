@@ -50,6 +50,18 @@ cmp.setup({
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
   },
+  sorting = {
+    comparators = {
+      cmp.config.compare.offset,
+      cmp.config.compare.exact,
+      cmp.config.compare.recently_used,
+      require("clangd_extensions.cmp_scores"),
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    }
+  },
   formatting = {
     format = function(entry, item)
       item.kind = string.format("%s %s", get_kind_icon(item.kind), item.kind)
@@ -59,7 +71,7 @@ cmp.setup({
         buffer = "[Buf]",
         nvim_lua = "[Lua]",
         path = "[Path]",
-        copilot = "[Cop]",
+        -- copilot = "[Cop]",
       })[entry.source.name]
       item.dup = ({
         buffer = 1,
@@ -120,7 +132,7 @@ cmp.setup({
   },
   sources = {
     { name = "nvim_lsp" },
-    { name = "copilot" },
+    -- { name = "copilot" },
     { name = "luasnip" },
     { name = "path" },
     { name = "buffer" },

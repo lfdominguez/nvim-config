@@ -74,6 +74,19 @@ local function packer_startup(use)
     requires = {"kyazdani42/nvim-web-devicons", "arkav/lualine-lsp-progress"},
     config = "require('h3r3t1c.plugins/lualine')"
   })
+
+  use({
+    "p00f/clangd_extensions.nvim",
+    config = "require('h3r3t1c.plugins/clangd_extensions')"
+  })
+
+  use {
+    "brymer-meneses/grammar-guard.nvim",
+    requires = {
+        "neovim/nvim-lspconfig",
+        "williamboman/nvim-lsp-installer"
+    }
+  }
     
 --  use({
 --    "kyazdani42/nvim-tree.lua",

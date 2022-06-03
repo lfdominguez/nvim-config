@@ -9,10 +9,12 @@ vim.g.loaded_tarPlugin = false
 vim.g.loaded_zipPlugin = false
 vim.g.loaded_2html_plugin = false
 
+-- vim.lsp.set_log_level("debug")
+
 vim.g["mapleader"] = " "
 vim.g["maplocalleader"] = " "
 vim.opt.termguicolors = true
-vim.g.did_load_filetypes = 1
+--vim.g.did_load_filetypes = 1
 
 vim.defer_fn(function()
   require('h3r3t1c.init')

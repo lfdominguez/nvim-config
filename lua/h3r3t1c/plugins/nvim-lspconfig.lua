@@ -1,7 +1,10 @@
 local lspconfig = require("lspconfig")
 local configs = require("lspconfig/configs")
+local utils = lspconfig.util
 
 lspconfig.terraformls.setup{}
+lspconfig.cmake.setup{}
+-- lspconfig.clangd.setup{}
 
 -- lspconfig.yamlls.setup{}
 
