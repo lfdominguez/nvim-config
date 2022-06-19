@@ -4,11 +4,6 @@ local telepv = require("telescope.previewers")
 tele.setup({
             grep_previewer = telepv.vim_buffer_vimgrep.new,
             extensions = {
-              zettel = {
-                zk_path = "~/Notes",
-                link_style = "wiki",
-                remove_ext = true
-              }
             }
            })
 
