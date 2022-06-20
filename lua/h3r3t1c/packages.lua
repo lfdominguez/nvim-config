@@ -45,10 +45,16 @@ local function packer_startup(use)
     config = "vim.g.gruvbox_flat_style = 'dark'; vim.cmd[[colorscheme gruvbox-flat]]"
   })
     
+  -- use({
+    -- "nvim-telescope/telescope.nvim",
+    -- requires = {"nvim-telescope/telescope-symbols.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzy-native.nvim"},
+    -- config = "require('h3r3t1c.plugins/telescope')"
+  -- })
+  
   use({
-    "nvim-telescope/telescope.nvim",
-    requires = {"nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzy-native.nvim"},
-    config = "require('h3r3t1c.plugins/telescope')"
+    "ibhagwan/fzf-lua",
+    requires = {"kyazdani42/nvim-web-devicons"},
+    config = "require('h3r3t1c.plugins/fzf-lua')"
   })
     
   use({

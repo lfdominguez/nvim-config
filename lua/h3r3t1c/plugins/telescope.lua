@@ -1,11 +1,7 @@
 local tele = require("telescope")
 local telepv = require("telescope.previewers")
 
-tele.setup({
-            grep_previewer = telepv.vim_buffer_vimgrep.new,
-            extensions = {
-            }
-           })
+tele.setup()
 
 tele.load_extension("fzy_native")
 tele.load_extension("projects")
