@@ -19,10 +19,15 @@ packer.init({
 })
 
 local function packer_startup(use)
-  use({
-    "wbthomason/packer.nvim",
-    opt = true,
-  })
+    use({
+        "wbthomason/packer.nvim",
+        opt = true,
+    })
+
+    use({
+        "jose-elias-alvarez/null-ls.nvim",
+        config = "require('h3r3t1c.plugins/null-ls')",
+    })
 
   use({
     "lewis6991/impatient.nvim"
@@ -60,12 +65,13 @@ local function packer_startup(use)
   use({
     "hrsh7th/nvim-cmp",
     requires = {
+      "onsails/lspkind.nvim",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
-      "hrsh7th/cmp-copilot"
+      -- "hrsh7th/cmp-copilot"
     },
     config = "require('h3r3t1c.plugins/nvim-cmp')"
   })

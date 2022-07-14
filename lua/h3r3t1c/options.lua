@@ -5,30 +5,64 @@ vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
 
-opt.completeopt = { "menuone", "noselect" }
-opt.undofile = true
-opt.ruler = false
-opt.hidden = true
+-- Moving around, searching and patterns
+opt.path = ".,**"
 opt.ignorecase = true
+opt.smartcase = true
+
+-- Display texts
+opt.scrolloff = 10
+opt.display = "truncate"
+opt.fillchars = { vert = "|", horiz = "─", eob = " " }
+opt.lazyredraw = true
+opt.list = true
+opt.listchars = {
+  extends = "⟩",
+  nbsp = "␣",
+  precedes = "⟨",
+  tab = "► ",
+  trail = "·",
+}
+
+-- Syntax, highlighting and spelling
+opt.synmaxcol = 1024
+opt.termguicolors = true
+opt.cursorline = true
+
+-- Multiple windows
+opt.previewheight = 5
 opt.splitbelow = true
 opt.splitright = true
-opt.termguicolors = true
-opt.cul = true
+
+-- Using the mouse
 opt.mouse = "a"
+opt.ruler = false
+opt.visualbell = true
+
+-- Selecting text
+opt.clipboard = "unnamedplus,unnamed"
+
+-- Editing text
+opt.undofile = true
+opt.textwidth = 80
+opt.formatoptions = "qrnj1"
+opt.formatlistpat =
+  [[^\\s*[\\[({]\\\?\\([0-9]\\+\\\|[iIvVxXlLcCdDmM]\\+\\\|[a-zA-Z]\\)[\\]:.)}]\\s\\+\\\|^\\s*[-+o*]\\s\\+]]
+opt.complete = ".,w,b,u,t,i,k,kspell,s"
+opt.pumheight = 30
+opt.dictionary = { "/usr/share/dict/spanish", "/usr/share/dict/words" }
+
+-- Others
+opt.completeopt = { "menu", "menuone", "noselect" }
+opt.hidden = true
+opt.cul = true
 opt.signcolumn = "yes"
 opt.cmdheight = 1
 opt.updatetime = 250
-opt.timeoutlen = 400
-opt.clipboard = "unnamedplus"
+opt.gdefault = true
 
--- scroll off
-opt.scrolloff = 10
-
--- disable nvim intro
+-- Disable nvim intro
 opt.shortmess:append "sI"
-
--- disable tilde on end of buffer
-opt.fillchars = { eob = " " }
 
 -- Numbers
 opt.number = true
@@ -37,8 +71,60 @@ opt.relativenumber = true
 
 -- Indenline
 opt.expandtab = true
-opt.shiftwidth = 2
+opt.shiftwidth = 4
+opt.tabstop = 4
+opt.softtabstop = 4
 opt.smartindent = true
+
+-- Folding
+opt.foldlevel = 99
+
+-- Mapping
+opt.timeoutlen = 400
+opt.ttimeoutlen = 50
+
+-- reading and writing files
+opt.fileformats = "unix"
+opt.writebackup = false
+opt.autowrite = true
+
+-- The swap file
+opt.swapfile = false
+
+-- command line editing
+opt.wildmode = "longest:full,full"
+opt.wildignore:append("*.swp,*.bak")
+opt.wildignore:append("*.pyc,*.class,*.sln,*.Master,*.csproj,*.csproj.user,*.cache,*.dll,*.pdb,*.min.*,bundle.*")
+opt.wildignore:append("*/.git/**/*,*/.hg/**/*,*/.svn/**/*")
+opt.wildignore:append("*/min/*,*/vendor/*")
+opt.wildignore:append("*/node_modules/*,*/bower_components/*")
+opt.wildignore:append("*/java/*,*/target/*,*/out/*,*/_build/**/*")
+opt.wildignore:append("tags,cscope.*")
+opt.wildignore:append("*.tar.*")
+opt.wildignorecase = true
+
+-- Replace grep command
+if vim.fn.executable("rg") then
+  opt.grepprg = "rg --vimgrep"
+  opt.grepformat = "%f:%l:%c:%m"
+end
+
+-- diagnostics
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  underline = false,
+  update_in_insert = false,
+  severity_sort = true,
+  float = { source = "always" },
+})
+
+local signs = { Error = "● ", Warn = "● ", Hint = "● ", Info = "● " }
+
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line

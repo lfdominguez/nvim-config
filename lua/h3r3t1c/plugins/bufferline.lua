@@ -102,10 +102,10 @@
           local info = vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
           local hint = vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
 
-          error = vim.lsp.diagnostic.get_count(0, [[Error]])
-          warning = vim.lsp.diagnostic.get_count(0, [[Warning]])
-          info = vim.lsp.diagnostic.get_count(0, [[Information]])
-          hint = vim.lsp.diagnostic.get_count(0, [[Hint]])
+          error = vim.diagnostic.get(0, [[Error]])
+          warning = vim.diagnostic.get(0, [[Warning]])
+          info = vim.diagnostic.get(0, [[Information]])
+          hint = vim.diagnostic.get(0, [[Hint]])
 
           if error ~= 0 then
             result[1] = {

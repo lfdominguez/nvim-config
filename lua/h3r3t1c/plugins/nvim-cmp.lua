@@ -52,34 +52,44 @@ cmp.setup({
   },
   sorting = {
     comparators = {
-      cmp.config.compare.offset,
-      cmp.config.compare.exact,
-      cmp.config.compare.recently_used,
-      require("clangd_extensions.cmp_scores"),
-      cmp.config.compare.kind,
-      cmp.config.compare.sort_text,
-      cmp.config.compare.length,
-      cmp.config.compare.order,
+        cmp.config.compare.score,
+        cmp.config.compare.recently_used,
+        cmp.config.compare.locality,
+        cmp.config.compare.kind,
+        cmp.config.compare.length,
+        require("clangd_extensions.cmp_scores"),
     }
   },
   formatting = {
-    format = function(entry, item)
-      item.kind = string.format("%s %s", get_kind_icon(item.kind), item.kind)
-      item.menu = ({
-        nvim_lsp = "[LSP]",
-        luasnip = "[Snp]",
-        buffer = "[Buf]",
-        nvim_lua = "[Lua]",
-        path = "[Path]",
+    format = require("lspkind").cmp_format({
+      mode = "symbol_text",
+      maxwidth = 50,
+      before = function(entry, vim_item)
+        if entry.source.name == "nvim_lsp" then
+          vim_item.menu = entry.source.source.client.name
+        else
+          vim_item.menu = entry.source.name
+        end
+        return vim_item
+      end,
+    }),
+    --format = function(entry, item)
+    --  item.kind = string.format("%s %s", get_kind_icon(item.kind), item.kind)
+    --  item.menu = ({
+    --    nvim_lsp = "[LSP]",
+    --    luasnip = "[Snp]",
+    --    buffer = "[Buf]",
+    --    nvim_lua = "[Lua]",
+    --    path = "[Path]",
         -- copilot = "[Cop]",
-      })[entry.source.name]
-      item.dup = ({
-        buffer = 1,
-        path = 1,
-        nvim_lsp = 0,
-      })[entry.source.name] or 0
-      return item
-    end,
+    --  })[entry.source.name]
+    --  item.dup = ({
+    --    buffer = 1,
+    --    path = 1,
+    --    nvim_lsp = 0,
+    --  })[entry.source.name] or 0
+    --  return item
+    --end,
   },
   mapping = {
     ["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -101,12 +111,12 @@ cmp.setup({
       elseif check_backspace() then
         vim.fn.feedkeys(replace_termcodes("<Tab>"), "n")
       else
-        local copilot_keys = vim.fn["copilot#Accept"]()
-        if copilot_keys ~= "" then
-          vim.api.nvim_feedkeys(copilot_keys, "i", true)
-        else
+        -- local copilot_keys = vim.fn["copilot#Accept"]()
+        -- if copilot_keys ~= "" then
+          -- vim.api.nvim_feedkeys(copilot_keys, "i", true)
+        -- else
           fallback()
-        end
+        -- end
       end
     end, {
       "i",
@@ -131,11 +141,12 @@ cmp.setup({
     end,
   },
   sources = {
-    { name = "nvim_lsp" },
+    { name = "nvim_lsp_signature_help", priority = 100 },
+    { name = "nvim_lsp", priority = 80 },
     -- { name = "copilot" },
-    { name = "luasnip" },
-    { name = "path" },
-    { name = "buffer" },
+    { name = "luasnip", priority = 90},
+    { name = "path", priority = 20 },
+    { name = "buffer", priority = 40 },
   },
 })
 

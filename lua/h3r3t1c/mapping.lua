@@ -1,4 +1,20 @@
 cmd = vim.cmd
+local map = vim.api.nvim_set_keymap
+
+-- clear search highlights
+map("n", "<leader>/", ":nohlsearch<cr>", { noremap = true })
+
+-- remove trailing whitespaces and blank lines
+map("n", "<leader>s", [[ mz:silent! %s/\s\+$//<CR>:let @/=''<CR> `z ]], { noremap = true })
+
+-- don't use Ex mode, use Q for formatting.
+map("", "Q", "gq", {})
+
+-- keep the center
+map("n", "n", "nzz", { noremap = true })
+map("n", "N", "Nzz", { noremap = true })
+map("n", "*", "*zz", { noremap = true })
+map("n", "#", "#zz", { noremap = true })
 
 -- Extend %% as current file's folder
 cmd "cabbr <expr> %% expand('%:p:h')"
@@ -20,10 +36,6 @@ cmd "vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z"
 cmd "nnoremap Y y$"
 --  qq to record, Q to replay
 cmd "nnoremap Q @q"
-
--- Telescope zk
-cmd "nmap <leader>zf :lua require('telescope').extensions.zettel.find_zettel()<CR>"
-cmd "nmap <leader>zg :lua require('telescope').extensions.zettel.grep_zettels()<CR>"
 
 -- Python execute
 cmd "nmap <leader>p :w<CR>:!python %<CR>"
