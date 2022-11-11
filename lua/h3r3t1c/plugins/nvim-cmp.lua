@@ -53,6 +53,7 @@ cmp.setup({
   sorting = {
     comparators = {
         cmp.config.compare.score,
+        require "cmp-under-comparator".under,
         cmp.config.compare.recently_used,
         cmp.config.compare.locality,
         cmp.config.compare.kind,
@@ -140,11 +141,11 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
+  experimental = { ghost_text = true },
   sources = {
-    { name = "nvim_lsp_signature_help", priority = 100 },
     { name = "nvim_lsp", priority = 80 },
     -- { name = "copilot" },
-    { name = "luasnip", priority = 90},
+    { name = "luasnip", priority = 70},
     { name = "path", priority = 20 },
     { name = "buffer", priority = 40 },
   },
@@ -174,7 +175,44 @@ cmp.setup.cmdline(':', {
   })
 })
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+local handlers = require('nvim-autopairs.completion.handlers')
+
+cmp.event:on(
+    'confirm_done',
+    cmp_autopairs.on_confirm_done({
+        filetypes = {
+            -- "*" is a alias to all filetypes
+            ["*"] = {
+                ["("] = {
+                    kind = {
+                        cmp.lsp.CompletionItemKind.Function,
+                        cmp.lsp.CompletionItemKind.Method,
+                    },
+                    handler = handlers["*"]
+                }
+            },
+            lua = {
+                ["("] = {
+                    kind = {
+                        cmp.lsp.CompletionItemKind.Function,
+                        cmp.lsp.CompletionItemKind.Method
+                    },
+                    ---@param char string
+                    ---@param item item completion
+                    ---@param bufnr buffer number
+                    handler = function(char, item, bufnr)
+                        -- Your handler function. Inpect with print(vim.inspect{char, item, bufnr})
+                    end
+                }
+            },
+            -- Disable for tex
+            tex = false
+        }
+    })
+)
+
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 -- require('lspconfig')['lua'].setup {
   -- capabilities = capabilities

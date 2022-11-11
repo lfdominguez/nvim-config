@@ -1,8 +1,8 @@
 -- Entrypoint for my Neovim configuration!
 
 -- Some defaults
-vim.g.do_filetype_lua = 1
-vim.g.did_load_filetypes = 0
+--vim.g.do_filetype_lua = 1
+--vim.g.did_load_filetypes = 0
 
 -- Store startup time in seconds
 vim.g.start_time = vim.fn.reltime()

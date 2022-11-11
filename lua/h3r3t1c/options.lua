@@ -14,7 +14,7 @@ opt.smartcase = true
 opt.scrolloff = 10
 opt.display = "truncate"
 opt.fillchars = { vert = "|", horiz = "─", eob = " " }
-opt.lazyredraw = true
+opt.lazyredraw = false
 opt.list = true
 opt.listchars = {
   extends = "⟩",
@@ -28,6 +28,7 @@ opt.listchars = {
 opt.synmaxcol = 1024
 opt.termguicolors = true
 opt.cursorline = true
+opt.cursorcolumn = true
 
 -- Multiple windows
 opt.previewheight = 5
@@ -73,8 +74,9 @@ opt.relativenumber = true
 opt.expandtab = true
 opt.shiftwidth = 4
 opt.tabstop = 4
-opt.softtabstop = 4
+opt.softtabstop = -1
 opt.smartindent = true
+opt.smarttab = true
 
 -- Folding
 opt.foldlevel = 99

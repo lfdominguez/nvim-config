@@ -3,7 +3,8 @@
       numbers = function(opts)
         return string.format("%s", opts.id)
       end,
-      indicator_icon = "▎",
+      indicator_icon = nil,
+      indicator = { style = "icon", icon = "▎" },
       buffer_close_icon = "",
       modified_icon = "●",
       close_icon = "",

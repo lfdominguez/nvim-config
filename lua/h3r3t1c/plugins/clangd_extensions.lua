@@ -1,23 +1,48 @@
 local util = require 'lspconfig.util'
 
-local root_files = {
-  '.clangd',
-  '.clang-tidy',
-  '.clang-format',
-  'compile_commands.json',
-  'compile_flags.txt',
-  'configure.ac', -- AutoTools
-  '.pio/build/esp32dev/compile_commands.json',
-}
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
 
 require("clangd_extensions").setup {
     server = {
-      cmd = { 'clangd', '--query-driver="/**/*"' },
---      root_dir = function(fname) return "/home/luis/Documentos/PlatformIO/Projects/TestESP32/.pio/build/esp32dev/" end,
---      root_dir = function(fname)
---        return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
---      end
+        cmd = { 'clangd', '--query-driver="/**/*"' },
+        capabilities = capabilities,
+        on_attach = function(client, bufnr)
+            local caps = client.server_capabilities
+
+            local signature_setup = {
+                bind = true,
+                handler_opts = {
+                    border = "rounded"
+                }
+            }
+
+            require('h3r3t1c.utils').lsp_key_binding(bufnr)
+
+            -- require "lsp_signature".on_attach(signature_setup, bufnr)
+            
+            if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
+                local augroup = vim.api.nvim_create_augroup("SemanticTokens", {})
+                vim.api.nvim_create_autocmd("TextChanged", {
+                    group = augroup,
+                    buffer = bufnr,
+                    callback = function()
+                        vim.lsp.buf.semantic_tokens_full()
+                    end,
+                })
+                
+                -- fire it first time on load as well
+                vim.lsp.buf.semantic_tokens_full()
+            end
+        end,
     },
     extensions = {
         -- defaults:

@@ -19,15 +19,92 @@ packer.init({
 })
 
 local function packer_startup(use)
+    use ({
+        'saecki/crates.nvim',
+        event = { "BufRead Cargo.toml" },
+        requires = { { 'nvim-lua/plenary.nvim' } },
+        config = function()
+            require('crates').setup()
+
+        end,
+    })
+
+    use({
+        "m-demare/hlargs.nvim",
+        config = function()
+            require("h3r3t1c.plugins.hlargs").setup()
+        end,
+    })
+
+    use({
+        "theHamsta/nvim-semantic-tokens",
+        config = "require('h3r3t1c.plugins/semantic-tokens')"
+    })
+
+    use({
+        "folke/noice.nvim",
+        event = "VimEnter",
+        config = function()
+            require("noice").setup({
+                lsp = {
+                    hover = {
+                        enabled = true,
+                    },
+                    signature = {
+                        enabled = false,
+                    },
+                    message = {
+                        enabled = true,
+                    },
+                    override = {
+                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                        ["vim.lsp.util.stylize_markdown"] = true,
+                        ["cmp.entry.get_documentation"] = true,
+                    },
+                },
+                presets = {
+                    bottom_search = true,
+                    command_palette = true,
+                    long_message_to_split = true,
+                    inc_rename = true,
+                },
+            })
+        end,
+        requires = {
+            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",
+        }
+    })
+
+    use {
+        'ojroques/nvim-lspfuzzy',
+        requires = {
+            {'junegunn/fzf'},
+            {'junegunn/fzf.vim'},  -- to enable preview (optional)
+        },
+        config = function()
+            require('lspfuzzy').setup {}
+        end,
+    }
+
+    use {
+        'kosayoda/nvim-lightbulb',
+        requires = 'antoinemadec/FixCursorHold.nvim',
+        config = "require('nvim-lightbulb').setup({autocmd = {enabled = true}})"
+    }
+
+    -- use 'wakatime/vim-wakatime'
+
     use({
         "wbthomason/packer.nvim",
         opt = true,
     })
 
-    use({
-        "jose-elias-alvarez/null-ls.nvim",
-        config = "require('h3r3t1c.plugins/null-ls')",
-    })
+    -- use({
+        -- "jose-elias-alvarez/null-ls.nvim",
+        -- config = "require('h3r3t1c.plugins/null-ls')",
+    -- })
 
   use({
     "lewis6991/impatient.nvim"
@@ -41,13 +118,22 @@ local function packer_startup(use)
     "ixru/nvim-markdown"
   })
 
-  use({
-    "nathom/filetype.nvim",
-  })
+--  use({
+--    "nathom/filetype.nvim",
+--  })
     
+--  use({
+--    "eddyekofo94/gruvbox-flat.nvim",
+--    config = "vim.g.gruvbox_flat_style = 'dark'; vim.cmd[[colorscheme gruvbox-flat]]"
+--  })
+  -- use({
+    -- 'folke/tokyonight.nvim',
+    -- config = "vim.cmd[[colorscheme tokyonight-night]]"
+  -- })
+
   use({
-    "eddyekofo94/gruvbox-flat.nvim",
-    config = "vim.g.gruvbox_flat_style = 'dark'; vim.cmd[[colorscheme gruvbox-flat]]"
+    'EdenEast/nightfox.nvim',
+    config = "vim.cmd[[colorscheme nordfox]]"
   })
     
   -- use({
@@ -61,6 +147,11 @@ local function packer_startup(use)
     requires = {"kyazdani42/nvim-web-devicons"},
     config = "require('h3r3t1c.plugins/fzf-lua')"
   })
+
+  use({
+    "windwp/nvim-autopairs",
+    config = "require('h3r3t1c.plugins/nvim-autopairs')"
+  })
     
   use({
     "hrsh7th/nvim-cmp",
@@ -71,16 +162,17 @@ local function packer_startup(use)
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
+      "lukas-reineke/cmp-under-comparator",
       -- "hrsh7th/cmp-copilot"
     },
     config = "require('h3r3t1c.plugins/nvim-cmp')"
   })
   
-  use({
-    "neovim/nvim-lspconfig",
-    requires = {"ray-x/lsp_signature.nvim"},
-    config = "require('h3r3t1c.plugins/nvim-lspconfig')"
-  })
+  -- use({
+    -- "neovim/nvim-lspconfig",
+    -- requires = {"ray-x/lsp_signature.nvim"},
+    -- config = "require('h3r3t1c.plugins/nvim-lspconfig')"
+  -- })
   use({
     "hoob3rt/lualine.nvim",
     requires = {"kyazdani42/nvim-web-devicons", "arkav/lualine-lsp-progress"},
@@ -107,9 +199,9 @@ local function packer_startup(use)
 --    keys = "<leader>t",
 --  })
   
-  use({
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v2.x",
+  -- use({
+    -- "nvim-neo-tree/neo-tree.nvim",
+    --[[ branch = "v2.x",
     keys = "\\",
     requires = { 
       "nvim-lua/plenary.nvim",
@@ -139,7 +231,7 @@ local function packer_startup(use)
       }
     },
     config = "require('h3r3t1c.plugins/neotree')",
-  })
+  }) ]]
 
   use({
     "akinsho/bufferline.nvim",
@@ -269,14 +361,14 @@ local function packer_startup(use)
     config = "require('h3r3t1c.plugins/fzf')"
   })
  
-  use({
-    "github/copilot.vim",
-    config = function ()
-      vim.g.copilot_no_tab_map = true
-      vim.g.copilot_assume_mapped = true
-      vim.g.copilot_tab_fallback = ""
-    end
-  })
+  -- use({
+    -- "github/copilot.vim",
+    -- config = function ()
+      -- vim.g.copilot_no_tab_map = true
+      -- vim.g.copilot_assume_mapped = true
+      -- vim.g.copilot_tab_fallback = ""
+    -- end
+  -- })
 
   use({
     'hoschi/yode-nvim',

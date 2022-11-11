@@ -4,6 +4,8 @@ local utils = lspconfig.util
 
 lspconfig.terraformls.setup{}
 lspconfig.cmake.setup{}
+lspconfig.yamlls.setup {}
+
 -- lspconfig.clangd.setup{}
 
 -- lspconfig.yamlls.setup{}

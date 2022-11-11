@@ -13,9 +13,18 @@ parser_config.jinja2 = {
   filetype = "j2", -- if filetype does not match the parser name
 }
 
+parser_config.gotmpl = {
+  install_info = {
+    url = "https://github.com/ngalaiko/tree-sitter-go-template",
+    files = {"src/parser.c"}
+  },
+  filetype = "gotmpl",
+  used_by = {"gohtmltmpl", "gotexttmpl", "gotmpl", "yaml"}
+}
+
 ts.setup({
-    ensure_installed = {"cpp", "nix", "rust", "java", "yaml", "toml", "json", "bash", "hcl", "javascript", "lua", "python"},
-    indent = { enable = true },
+    ensure_installed = {"cpp", "nix", "rust", "java", "yaml", "toml", "json", "bash", "hcl", "javascript", "lua", "python", "vim", "regex", "markdown", "markdown_inline"},
+    --indent = { enable = true },
     playground = { enable = true },
     context_commentstring = { enable = true },
     autotag = {
