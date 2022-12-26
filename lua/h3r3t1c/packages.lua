@@ -19,6 +19,13 @@ packer.init({
 })
 
 local function packer_startup(use)
+    use({
+        "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+        config = function()
+            require("lsp_lines").setup()
+        end,
+    })
+
     use ({
         'saecki/crates.nvim',
         event = { "BufRead Cargo.toml" },
@@ -27,6 +34,13 @@ local function packer_startup(use)
             require('crates').setup()
 
         end,
+    })
+
+    use({
+        "lspcontainers/lspcontainers.nvim",
+        requires = {
+            "neovim/nvim-lspconfig"
+        }
     })
 
     use({
@@ -94,8 +108,6 @@ local function packer_startup(use)
         config = "require('nvim-lightbulb').setup({autocmd = {enabled = true}})"
     }
 
-    -- use 'wakatime/vim-wakatime'
-
     use({
         "wbthomason/packer.nvim",
         opt = true,
@@ -118,30 +130,11 @@ local function packer_startup(use)
     "ixru/nvim-markdown"
   })
 
---  use({
---    "nathom/filetype.nvim",
---  })
-    
---  use({
---    "eddyekofo94/gruvbox-flat.nvim",
---    config = "vim.g.gruvbox_flat_style = 'dark'; vim.cmd[[colorscheme gruvbox-flat]]"
---  })
-  -- use({
-    -- 'folke/tokyonight.nvim',
-    -- config = "vim.cmd[[colorscheme tokyonight-night]]"
-  -- })
-
   use({
     'EdenEast/nightfox.nvim',
     config = "vim.cmd[[colorscheme nordfox]]"
   })
     
-  -- use({
-    -- "nvim-telescope/telescope.nvim",
-    -- requires = {"nvim-telescope/telescope-symbols.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzy-native.nvim"},
-    -- config = "require('h3r3t1c.plugins/telescope')"
-  -- })
-  
   use({
     "ibhagwan/fzf-lua",
     requires = {"kyazdani42/nvim-web-devicons"},
@@ -168,11 +161,12 @@ local function packer_startup(use)
     config = "require('h3r3t1c.plugins/nvim-cmp')"
   })
   
-  -- use({
-    -- "neovim/nvim-lspconfig",
-    -- requires = {"ray-x/lsp_signature.nvim"},
-    -- config = "require('h3r3t1c.plugins/nvim-lspconfig')"
-  -- })
+  use({
+    "neovim/nvim-lspconfig",
+    requires = {"ray-x/lsp_signature.nvim"},
+    config = "require('h3r3t1c.plugins/nvim-lspconfig')"
+  })
+
   use({
     "hoob3rt/lualine.nvim",
     requires = {"kyazdani42/nvim-web-devicons", "arkav/lualine-lsp-progress"},
@@ -192,47 +186,6 @@ local function packer_startup(use)
     }
   }
     
---  use({
---    "kyazdani42/nvim-tree.lua",
---    requires = {"kyazdani42/nvim-web-devicons"},
---    config = "require('h3r3t1c.plugins/nvim-tree')",
---    keys = "<leader>t",
---  })
-  
-  -- use({
-    -- "nvim-neo-tree/neo-tree.nvim",
-    --[[ branch = "v2.x",
-    keys = "\\",
-    requires = { 
-      "nvim-lua/plenary.nvim",
-      "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
-      "MunifTanjim/nui.nvim",
-      {
-        -- only needed if you want to use the commands with "_with_window_picker" suffix
-        's1n7ax/nvim-window-picker',
-        tag = "1.*",
-        config = function()
-          require'window-picker'.setup({
-            autoselect_one = true,
-            include_current = false,
-            filter_rules = {
-              -- filter using buffer options
-              bo = {
-                -- if the file type is one of following, the window will be ignored
-                filetype = { 'neo-tree', "neo-tree-popup", "notify", "quickfix" },
-
-                -- if the buffer type is one of following, the window will be ignored
-                buftype = { 'terminal' },
-              },
-            },
-            other_win_hl_color = '#e35e4f',
-          })
-        end,
-      }
-    },
-    config = "require('h3r3t1c.plugins/neotree')",
-  }) ]]
-
   use({
     "akinsho/bufferline.nvim",
     config = "require('h3r3t1c.plugins/bufferline')",
